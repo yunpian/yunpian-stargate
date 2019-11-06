@@ -25,7 +25,6 @@
 
 #### 模块列表
 + **StargateMsgBus消息总线**
-  + https://wiki.qipeng.com/pages/viewpage.action?pageId=7607979
   + ```java
     stargateConfig.addProcessAnnotationConsume(new StargateMsgBusAnnotationHandel(appName));
     stargateConfig.addProcessAnnotationProducer(new StargateMsgBusAnnotationHandel(appName));
