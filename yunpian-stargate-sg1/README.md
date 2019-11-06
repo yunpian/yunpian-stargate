@@ -1,6 +1,6 @@
 # yunpianmvn-stargate-sg1
 
-+ 该项目用作扩展stargate组件功能，如果你还不了解stargate请前往[Stargate](../readme.md)
++ 该项目用作扩展stargate组件功能，如果你还不了解stargate请前往[Stargate](../README.md)
 + 如果你想为stargate扩展功能请新建自己的分支后提交merge
 + 请这样命名你的分支名
   + feature/20190530-zhoukaifan-XXXXX
