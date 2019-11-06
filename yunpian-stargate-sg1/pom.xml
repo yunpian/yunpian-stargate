@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>com.yunpian.stargate</groupId>
+    <artifactId>yunpian-stargate</artifactId>
+    <version>0.9.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.yunpian.stargate</groupId>
+  <artifactId>yunpian-stargate-sg1</artifactId>
+  <version>${parent.version}</version>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.yunpian.stargate</groupId>
+      <artifactId>yunpian-stargate-core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.yunpian.stargate</groupId>
+      <artifactId>yunpian-stargate-springboot</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.yunpian.stargate</groupId>
+      <artifactId>yunpian-stargate-jackson</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
