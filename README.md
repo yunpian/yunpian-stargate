@@ -1,5 +1,7 @@
 # Stargate
 
+### 本版本非正式版，如需要使用请等待1.0.0版本
+
 ### 简介
 
 Stargate（星门）是一个RocketMQ的客户端，使用全注解的方式，可以很方便的与SpringBoot|Cloud整合，也可以独立使用，你可以在Maven中引入相关依赖
