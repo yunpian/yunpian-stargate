@@ -27,6 +27,7 @@ public class StargateConfig {
   private boolean vipChannel = false;
   private Class decodeClass = SerializeStargateClientDecode.class;
   private Class encodClass = SerializeStargateClientEncode.class;
+  private long[] delayLevel;
 
   private List<IProcessAnnotationConsume> processAnnotationConsumes = Collections
     .synchronizedList(new ArrayList<>());
@@ -43,6 +44,13 @@ public class StargateConfig {
   private List<IProcessMessageProducer> processMessageProducers = Collections
     .synchronizedList(new ArrayList<>());
 
+  public long[] getDelayLevel() {
+    return delayLevel;
+  }
+
+  public void setDelayLevel(long[] delayLevel) {
+    this.delayLevel = delayLevel;
+  }
 
   public boolean isVipChannel() {
     return vipChannel;

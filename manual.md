@@ -69,6 +69,10 @@
        yunpian: 127.0.0.1:9876  
        ycloud: 127.0.0.1:9876  
        weike: 127.0.0.1:9876  
+     #这里配置延时等级毫秒为单位，请保证与服务器配置相同
+     delayLevel:
+       - 10000
+       - 30000
    ```
 
 + 方法二
@@ -92,6 +96,9 @@
            stargateConfig.setEncodClass(JacksonRocketClientEncode.class);
            stargateConfig.setDecodeClass(JacksonRocketClientDecode.class);
            stargateConfig.setDelayMsecSwitch(true);
+           stargateConfig.setDelayLevel(new long[]{10000, 30000, 60000, 120000, 180000, 240000,
+           300000, 360000, 420000, 480000, 540000, 600000, 1200000, 1800000, 3600000, 7200000, 14400000,
+           21600000, 28800000, 36000000, 43200000, 86400000, 129600000, 172800000, 259200000});
            return stargateConfig;
        }
    }

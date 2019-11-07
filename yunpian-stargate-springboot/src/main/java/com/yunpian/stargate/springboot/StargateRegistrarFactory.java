@@ -13,6 +13,7 @@ import com.yunpian.stargate.core.dto.StargateThreadSizeDTO;
 import com.yunpian.stargate.core.dto.StargateVipChannelDTO;
 import com.yunpian.stargate.core.process.IStargateClientDecode;
 import com.yunpian.stargate.core.process.IStargateClientEncod;
+import com.yunpian.stargate.core.utils.DelayUtils;
 import com.yunpian.stargate.core.utils.EncodAndDncodeFactory;
 import com.yunpian.stargate.core.utils.StargateEnvironment;
 import com.yunpian.stargate.core.utils.StringUtils;
@@ -57,6 +58,9 @@ public class StargateRegistrarFactory {
       if (!StringUtils.isBlank(stargateProperties.getEncodClassName())) {
         stargateConfig.setEncodClass(Class.forName(stargateProperties.getEncodClassName()));
       }
+      if (stargateProperties.getDelayLevel() != null) {
+        stargateConfig.setDelayLevel(stargateProperties.getDelayLevel());
+      }
     }
     for (String key : stargateConfig.getNamesrvAddr().keySet()) {
       String namesrvAddr = stargateConfig.getNamesrvAddr().get(key);
@@ -86,6 +90,15 @@ public class StargateRegistrarFactory {
     ProcessCenter.getProducersClientProcess().addAll(stargateConfig.getProcessClientProducers());
     ProcessCenter.getConsumeMessageProcess().addAll(stargateConfig.getProcessMessageConsumes());
     ProcessCenter.getProducersMessageProcess().addAll(stargateConfig.getProcessMessageProducers());
+
+    long[] delayLevel = stargateConfig.getDelayLevel();
+    if (delayLevel != null) {
+      DelayUtils.delayLevel = new long[delayLevel.length + 1];
+      DelayUtils.delayLevel[0] = 0;
+      for (int i = 0; i < delayLevel.length; ++i) {
+        DelayUtils.delayLevel[i + 1] = delayLevel[i];
+      }
+    }
   }
 
   public <T> T createProducer(Class<T> clazz) throws Throwable {
