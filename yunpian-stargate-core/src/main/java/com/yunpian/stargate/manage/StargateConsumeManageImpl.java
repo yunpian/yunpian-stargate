@@ -38,7 +38,6 @@ public class StargateConsumeManageImpl implements IStargateConsumeManageCore {
 
     String nameServer = consumeContext.getNamesrvAddr();
     String group = consumeContext.getGroup();
-    group = group + "-" + nameServer;
     oldGroupToKey.put(group, key);
     stargateConsumeManageDTOMap.put(key, stargateConsumeManageDTO);
   }

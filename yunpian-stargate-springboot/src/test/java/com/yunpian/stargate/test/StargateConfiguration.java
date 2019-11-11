@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class StargateConfiguration {
 
-  public final static String ENV = "auto-test74356";
+  public final static String ENV = "auto-test744356";
 
   //配置后yml文件中的配置将失效
   @Bean
