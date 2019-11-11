@@ -299,9 +299,9 @@ const stargateList = function () {
         });
       },
       timer() {
-        return setInterval(() => {
+        return setTimeout(() => {
           this.getData(this.filter);
-        }, 2500)
+        }, 5000)
       },
       onSubmit() {
         this.filter = {
@@ -337,8 +337,15 @@ const stargateList = function () {
       },
     },
     created: function () {
-      this.timer();
       this.getData(this.filter);
+    },
+    watch: {
+      tableData() {
+        this.timer()
+      }
+    },
+    destroyed() {
+      clearTimeout(this.timer)
     }
   })
 };
