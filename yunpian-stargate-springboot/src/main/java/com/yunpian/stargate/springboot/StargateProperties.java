@@ -21,6 +21,15 @@ public class StargateProperties {
   private String env;
   private Boolean vipChannel;
   private long[] delayLevel;
+  private String appName;
+
+  public String getAppName() {
+    return appName;
+  }
+
+  public void setAppName(String appName) {
+    this.appName = appName;
+  }
 
   public long[] getDelayLevel() {
     return delayLevel;

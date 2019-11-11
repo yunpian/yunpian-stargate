@@ -1,0 +1,29 @@
+app:
+  id: yunpian-stargate-command
+
+apollo:
+  meta: http://172.16.24.202:9001
+  cacheDir: 'configs'
+  autoUpdateInjectedSpringProperties: true
+  bootstrap:
+    enabled: true
+    namespaces: rocketmq,application
+  private:
+    key:
+      file: /opt/apollo/rsa_private_key.pem
+
+spring:
+  application:
+    name: yunpian-stargate-command
+  profiles:
+    active: dev
+  http:
+    encoding:
+      force: true
+      charset: UTF-8
+      enabled: true
+
+server:
+  port: 23380
+  tomcat:
+    uri-encoding: UTF-8

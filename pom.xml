@@ -14,6 +14,8 @@
     <module>yunpian-stargate-annotation</module>
     <module>yunpian-stargate-jackson</module>
     <module>yunpian-stargate-manage</module>
+    <module>yunpian-stargate-dogrobber</module>
+    <module>yunpian-stargate-command</module>
     <module>yunpian-stargate-sg1</module>
   </modules>
 
@@ -70,6 +72,11 @@
       <dependency>
         <groupId>com.yunpian.stargate</groupId>
         <artifactId>yunpian-stargate-annotation</artifactId>
+        <version>${stargate.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.yunpian.stargate</groupId>
+        <artifactId>yunpian-stargate-dogrobber</artifactId>
         <version>${stargate.version}</version>
       </dependency>
       <dependency>

@@ -28,6 +28,7 @@ public class StargateConfig {
   private Class decodeClass = SerializeStargateClientDecode.class;
   private Class encodClass = SerializeStargateClientEncode.class;
   private long[] delayLevel;
+  private String appName;
 
   private List<IProcessAnnotationConsume> processAnnotationConsumes = Collections
     .synchronizedList(new ArrayList<>());
@@ -43,6 +44,14 @@ public class StargateConfig {
     .synchronizedList(new ArrayList<>());
   private List<IProcessMessageProducer> processMessageProducers = Collections
     .synchronizedList(new ArrayList<>());
+
+  public String getAppName() {
+    return appName;
+  }
+
+  public void setAppName(String appName) {
+    this.appName = appName;
+  }
 
   public long[] getDelayLevel() {
     return delayLevel;

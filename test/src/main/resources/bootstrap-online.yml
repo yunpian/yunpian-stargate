@@ -1,0 +1,10 @@
+apollo:
+  meta: https://apollox.yunpian.com
+spring:
+  cloud:
+    config:
+      profile: online
+      label: online
+rocket:
+  yp-rocket: ${yp.rocket.servers}
+

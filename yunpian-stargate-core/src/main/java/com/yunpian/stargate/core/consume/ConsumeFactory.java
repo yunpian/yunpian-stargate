@@ -27,7 +27,7 @@ public class ConsumeFactory {
 
       String nameServer = consumeContext.getNamesrvAddr();
       String group = consumeContext.getGroup();
-      group = group + "-" + nameServer;
+//      group = group + "-" + nameServer;
 
       if (StringUtils.isBlank(nameServer) || StringUtils.isBlank(nameServer) ||
         StargateEnvironment.getNamesrv(nameServer) == null) {

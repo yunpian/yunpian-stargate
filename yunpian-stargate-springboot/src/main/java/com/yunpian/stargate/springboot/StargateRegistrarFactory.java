@@ -4,6 +4,7 @@ import com.yunpian.stargate.core.builder.ProcessCenter;
 import com.yunpian.stargate.core.builder.StargateFactory;
 import com.yunpian.stargate.core.context.ConsumeContext;
 import com.yunpian.stargate.core.context.ProducerContext;
+import com.yunpian.stargate.core.dto.StargateBaseDTO;
 import com.yunpian.stargate.core.dto.StargateConsumeBaseDTO;
 import com.yunpian.stargate.core.dto.StargateDecodeDTO;
 import com.yunpian.stargate.core.dto.StargateEncodDTO;
@@ -19,6 +20,7 @@ import com.yunpian.stargate.core.utils.StargateEnvironment;
 import com.yunpian.stargate.core.utils.StringUtils;
 import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * Created with IntelliJ IDEA. User: ZhouKaifan Date:2018/12/5 Time:9:24 PM
@@ -29,6 +31,8 @@ public class StargateRegistrarFactory {
   private StargateProperties stargateProperties;
   @Autowired(required = false)
   private StargateConfig stargateConfig;
+  @Value("${spring.application.name:default}")
+  private String appName;
 
   public void init() throws Throwable {
     if (stargateConfig == null) {
@@ -61,6 +65,9 @@ public class StargateRegistrarFactory {
       if (stargateProperties.getDelayLevel() != null) {
         stargateConfig.setDelayLevel(stargateProperties.getDelayLevel());
       }
+      if (stargateProperties.getAppName() != null) {
+        stargateConfig.setAppName(stargateProperties.getAppName());
+      }
     }
     for (String key : stargateConfig.getNamesrvAddr().keySet()) {
       String namesrvAddr = stargateConfig.getNamesrvAddr().get(key);
@@ -70,6 +77,9 @@ public class StargateRegistrarFactory {
     }
     if (stargateConfig.getNamesrvAddr().get(stargateConfig.getNamesrvDefault()) == null) {
       stargateConfig.getNamesrvAddr().put(stargateConfig.getNamesrvDefault(), "127.0.0.1:9876");
+    }
+    if (StringUtils.isBlank(stargateConfig.getAppName())) {
+      stargateConfig.setAppName(appName);
     }
     refresh(stargateConfig);
   }
@@ -109,6 +119,9 @@ public class StargateRegistrarFactory {
       stargateMapperDTO.setGroup(stargateConfig.getEnv());
       stargateMapperDTO.addTopic(stargateConfig.getEnv());
     }
+    StargateBaseDTO stargateBaseDTO = producerContextDefault
+      .getDTOOrNew(StargateBaseDTO.class);
+    stargateBaseDTO.setAppName(stargateConfig.getAppName());
     StargateVipChannelDTO stargateVipChannelDTO = producerContextDefault
       .getDTOOrNew(StargateVipChannelDTO.class);
     StargateEncodDTO stargateEncodDTO = producerContextDefault.getDTOOrNew(StargateEncodDTO.class);
@@ -131,6 +144,9 @@ public class StargateRegistrarFactory {
     }
     StargateDecodeDTO stargateDecodeDTO = consumeContextDefault
       .getDTOOrNew(StargateDecodeDTO.class);
+    StargateBaseDTO stargateBaseDTO = consumeContextDefault
+      .getDTOOrNew(StargateBaseDTO.class);
+    stargateBaseDTO.setAppName(stargateConfig.getAppName());
     StargateVipChannelDTO stargateVipChannelDTO = consumeContextDefault
       .getDTOOrNew(StargateVipChannelDTO.class);
     StargateNameServerDTO stargateNameServerDTO = consumeContextDefault

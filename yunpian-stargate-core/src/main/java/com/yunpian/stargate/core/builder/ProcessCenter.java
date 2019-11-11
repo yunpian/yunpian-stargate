@@ -14,6 +14,7 @@ import com.yunpian.stargate.core.annotation.impl.StargateDelayParamProcessAnnota
 import com.yunpian.stargate.core.annotation.impl.StargateEncodProcessAnnotation;
 import com.yunpian.stargate.core.annotation.impl.StargateFromWhereProcessAnnotation;
 import com.yunpian.stargate.core.annotation.impl.StargateMapperProcessAnnotation;
+import com.yunpian.stargate.core.annotation.impl.StargateNameServerGroupProcess;
 import com.yunpian.stargate.core.annotation.impl.StargateNameServerProcessAnnotation;
 import com.yunpian.stargate.core.annotation.impl.StargateOneWayProcessAnnotation;
 import com.yunpian.stargate.core.annotation.impl.StargatePullBatchSizeProcessAnnotation;
@@ -57,27 +58,29 @@ public class ProcessCenter {
   private ProcessCenter() {
     processAnnotationConsumes.add(new MethodsProcessConsumeAnnotation());
     processAnnotationConsumes.add(new StargateMapperProcessAnnotation());
+    processAnnotationConsumes.add(new StargateNameServerProcessAnnotation());
     processAnnotationConsumes.add(new StargateFromWhereProcessAnnotation());
     processAnnotationConsumes.add(new StargateBodyProcessAnnotation());
     processAnnotationConsumes.add(new StargateDecodeProcessAnnotation());
     processAnnotationConsumes.add(new StargateThreadSizeProcessAnnotation());
-    processAnnotationConsumes.add(new StargateNameServerProcessAnnotation());
     processAnnotationConsumes.add(new StargateBroadcastingProcessAnnotation());
     processAnnotationConsumes.add(new StargatePullBatchSizeProcessAnnotation());
     processAnnotationConsumes.add(new StargateBaseProcessAnnotation());
     processAnnotationConsumes.add(new StargateVipChannelProcessAnnotation());
+    processAnnotationConsumes.add(new StargateNameServerGroupProcess());
 
     processAnnotationProducers.add(new MethodsProcessProducerAnnotation());
     processAnnotationProducers.add(new StargateMapperProcessAnnotation());
+    processAnnotationProducers.add(new StargateNameServerProcessAnnotation());
     processAnnotationProducers.add(new StargateBodyProcessAnnotation());
     processAnnotationProducers.add(new StargateEncodProcessAnnotation());
     processAnnotationProducers.add(new StargateOneWayProcessAnnotation());
     processAnnotationProducers.add(new StargateDelayMsecProcessAnnotation());
     processAnnotationProducers.add(new StargateDelayLevelProcessAnnotation());
-    processAnnotationProducers.add(new StargateNameServerProcessAnnotation());
     processAnnotationProducers.add(new StargateDelayParamProcessAnnotation());
     processAnnotationProducers.add(new StargateBaseProcessAnnotation());
     processAnnotationProducers.add(new StargateVipChannelProcessAnnotation());
+    processAnnotationProducers.add(new StargateNameServerGroupProcess());
 
     processClientConsumes.add(new ConsumeBaseProcessClientConsume());
     processClientConsumes.add(new MapperProcessClientConsume());

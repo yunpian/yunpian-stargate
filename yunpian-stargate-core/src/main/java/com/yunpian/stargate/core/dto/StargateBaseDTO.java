@@ -8,7 +8,16 @@ import java.util.Arrays;
 public class StargateBaseDTO {
 
   private String id;
+  private String appName;
   private String[] tags;
+
+  public String getAppName() {
+    return appName;
+  }
+
+  public void setAppName(String appName) {
+    this.appName = appName;
+  }
 
   public String getId() {
     return id;

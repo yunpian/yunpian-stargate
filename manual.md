@@ -22,15 +22,6 @@
    </dependency>
    ```
    
-   ```xml
-   <!--兼容云片的编解码器，根据需要引入-->
-   <dependency>
-       <groupId>com.yunpian.stargate</groupId>
-       <artifactId>yunpian-stargate-yunpian</artifactId>
-       <version>0.9.0-SNAPSHOT</version>
-   </dependency>
-   ```
-
 2. 启动类添加`@EnableStargate`注解
 
    ```java
