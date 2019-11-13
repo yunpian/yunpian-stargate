@@ -63,6 +63,7 @@ Stargate（星门）是一个RocketMQ的客户端，使用全注解的方式，�
 
 + Stargate提供6个接口分别用于生产者和消费者扩展注解，扩展rocketClient的处理，扩展消息的处理，通过这些接口用户可以制作自己的插件来实现定制需求。
 + [项目介绍](./introduction.md)
++ [实现原理](https://mp.weixin.qq.com/s/pAXg3eLEfZkqCtgi95SBhQ)
 
 ### 使用手册
 
