@@ -14,5 +14,5 @@ submode
 .idea/
 ds-mongo.xml
 .DS_Store
-test/
+testcommand/
 configs/
