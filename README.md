@@ -111,3 +111,5 @@ public class Application {
   <version>1.0.0</version>
 </dependency>
 ```
+
++ 目前控制台支持基本信息展示，消费者启停，消费者线程池控制，关系拓扑图展示
