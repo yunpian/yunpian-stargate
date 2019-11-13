@@ -15,3 +15,4 @@ submode
 ds-mongo.xml
 .DS_Store
 test/
+configs/
