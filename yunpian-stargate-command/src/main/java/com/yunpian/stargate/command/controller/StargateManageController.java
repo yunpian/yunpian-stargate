@@ -2,6 +2,7 @@ package com.yunpian.stargate.command.controller;
 
 import com.yunpian.stargate.command.service.ICommandSendService;
 import com.yunpian.stargate.command.utils.Click;
+import com.yunpian.stargate.core.utils.StringUtils;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +42,20 @@ public class StargateManageController {
   @PostMapping("/resume/{id}")
   public Click<Boolean> resumeConsume(@PathVariable("id") String id) {
     boolean b = commandSendService.resumeConsume(id);
+    return Click.buildSucc(b);
+  }
+
+  @PostMapping("/setThreadSize/{id}")
+  public Click<Boolean> setThreadSize(
+    @PathVariable String id,
+    @RequestBody Integer threadSize) {
+    if (StringUtils.isBlank(id)) {
+      return Click.buildFaild(1, "没有可以操作的消费者");
+    }
+    if (threadSize == null || threadSize < 1 || threadSize > 999) {
+      return Click.buildFaild(1, "请输入正确的线程数");
+    }
+    boolean b = commandSendService.setThreadSize(id, threadSize);
     return Click.buildSucc(b);
   }
 
@@ -85,6 +100,12 @@ public class StargateManageController {
     for (String id : ids) {
       commandSendService.resumeConsume(id);
     }
+    return Click.buildSucc();
+  }
+
+  @PostMapping("/refresh")
+  public Click refresh() {
+    commandSendService.refresh();
     return Click.buildSucc();
   }
 }

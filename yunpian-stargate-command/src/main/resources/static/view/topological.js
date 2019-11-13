@@ -3,33 +3,62 @@ const topological = function () {
     template: ''
         + '<template>'
         + '<div>'
+        + '  <el-collapse v-model="collapseIndex">'
+        + '  <el-collapse-item title="操作面板" name="1">'
         + '  <div style="margin-top: 20px">'
         + '    <el-form :inline="true" :model="filterForm" class="demo-form-inline">'
         + '      <el-form-item label="应用名称">'
-        + '        <el-input v-model="filterForm.appName" placeholder="应用名称"></el-input>'
+        + '        <el-select v-model="filterForm.appName" multiple clearable filterable placeholder="应用名称">'
+        + '          <el-option'
+        + '            v-for="item in appNames"'
+        + '            :key="item"'
+        + '            :label="item"'
+        + '            :value="item">'
+        + '          </el-option>'
+        + '        </el-select>'
         + '      </el-form-item>'
+        + '      <br />'
         + '      <el-form-item label="Group">'
-        + '        <el-input v-model="filterForm.group" placeholder="Group"></el-input>'
+        + '        <el-select v-model="filterForm.group" multiple clearable filterable Group="应用名称">'
+        + '          <el-option'
+        + '            v-for="item in groups"'
+        + '            :key="item"'
+        + '            :label="item"'
+        + '            :value="item">'
+        + '          </el-option>'
+        + '        </el-select>'
         + '      </el-form-item>'
+        + '      <br />'
         + '      <el-form-item label="Topic">'
-        + '        <el-input v-model="filterForm.topic" placeholder="Topic"></el-input>'
+        + '        <el-select v-model="filterForm.topic" multiple clearable filterable Group="Topic">'
+        + '          <el-option'
+        + '            v-for="item in topics"'
+        + '            :key="item"'
+        + '            :label="item"'
+        + '            :value="item">'
+        + '          </el-option>'
+        + '        </el-select>'
         + '      </el-form-item>'
-        + '      <el-form-item label="模糊匹配" prop="delivery">'
-        + '        <el-switch v-model="filterForm.fuzzy"></el-switch>'
-        + '      </el-form-item>'
-        // + '      <el-form-item label="显示Topic" prop="delivery">'
-        // + '        <el-switch v-model="filterForm.showTopic"></el-switch>'
-        // + '      </el-form-item>'
+        + '      <br />'
         + '      <el-form-item>'
         + '        <el-button type="primary" @click="onSubmit">查询</el-button>'
         + '      </el-form-item>'
+        // + '      <el-form-item>'
+        // + '        <el-button type="primary" @click="onRefresh">刷新</el-button>'
+        // + '      </el-form-item>'
         + '    </el-form>'
         + '  </div>'
+        + '  </el-collapse-item>'
+        + '  </el-collapse>'
         + '  <div id="chart" style="width:100%; height:700px;margin-top: 0px"></div>'
         + '</div>'
         + '</template>',
     data: function () {
       return {
+        groups: [],
+        topics: [],
+        appNames: [],
+        collapseIndex: [],
         filter: {
           appName: '',
           topic: '',
@@ -47,6 +76,28 @@ const topological = function () {
       };
     },
     methods: {
+      onRefresh: function () {
+        this.$http.post("/consumeManage/refresh").then(
+            function (res) {
+              let parse = res.body;
+              if (parse.code != 0) {
+                this.$notify({
+                  title: '请求失败处理',
+                  message: parse.msg,
+                });
+                return;
+              }
+              this.$notify({
+                title: '命令下发成功',
+                message: '刷新客户端数据',
+              });
+            }, function () {
+              this.$notify({
+                title: '请求失败处理',
+                message: "请求失败处理",
+              });
+            });
+      },
       onSubmit() {
         this.filter = {
           appName: this.filterForm.appName,
@@ -136,6 +187,57 @@ const topological = function () {
                 message: "请求失败处理",
               });
             });
+        this.$http.get(
+            '/mqClientData/appNames').then(function (res) {
+          let parse = res.body;
+          if (parse.code != 0) {
+            this.$notify({
+              title: '请求失败处理',
+              message: parse.msg,
+            });
+            return;
+          }
+          this.appNames = parse.data;
+        }, function () {
+          this.$notify({
+            title: '请求失败处理',
+            message: "请求失败处理",
+          });
+        });
+        this.$http.get(
+            '/mqClientData/groups').then(function (res) {
+          let parse = res.body;
+          if (parse.code != 0) {
+            this.$notify({
+              title: '请求失败处理',
+              message: parse.msg,
+            });
+            return;
+          }
+          this.groups = parse.data;
+        }, function () {
+          this.$notify({
+            title: '请求失败处理',
+            message: "请求失败处理",
+          });
+        });
+        this.$http.get(
+            '/mqClientData/topics').then(function (res) {
+          let parse = res.body;
+          if (parse.code != 0) {
+            this.$notify({
+              title: '请求失败处理',
+              message: parse.msg,
+            });
+            return;
+          }
+          this.topics = parse.data;
+        }, function () {
+          this.$notify({
+            title: '请求失败处理',
+            message: "请求失败处理",
+          });
+        });
       },
     },
     mounted: function () {

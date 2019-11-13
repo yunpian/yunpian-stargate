@@ -28,7 +28,7 @@ public class StargateDelayLevelProcessAnnotation
     if (stargateDelayLevel.value() >= DelayUtils.delayLevel.length) {
       throw new StargateException("delayLevel greater than " + (DelayUtils.delayLevel.length - 1));
     }
-    stargateDelayDTO.setDelayMsec(DelayUtils.delayLevel[stargateDelayLevel.value()]);
+    stargateDelayDTO.setLevel(stargateDelayLevel.value());
   }
 
 }

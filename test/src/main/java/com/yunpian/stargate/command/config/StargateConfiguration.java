@@ -39,7 +39,7 @@ public class StargateConfiguration {
     Map<String, String> nameServer = new ConcurrentHashMap<>();
     nameServer.put("yunpian", yunpianName);
     stargateConfig.setNamesrvAddr(nameServer);
-    stargateConfig.setEnv("zkf");
+    stargateConfig.setEnv(PREFIX);
     stargateConfig.setEncodClass(JacksonStargateClientEncode.class);
     stargateConfig.setDecodeClass(JacksonStargateClientDecode.class);
     return stargateConfig;

@@ -6,6 +6,7 @@ import com.yunpian.stargate.command.service.ICommandSendService;
 import com.yunpian.stargate.command.service.IMQClientDataService;
 import com.yunpian.stargate.dogrobber.dto.CommandHandleDTO;
 import com.yunpian.stargate.dogrobber.enums.CommandHandleCodeEnum;
+import com.yunpian.stargate.dogrobber.enums.CommandHandleIdCardEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,24 @@ public class CommandSendServiceImpl implements ICommandSendService {
   private CommandSendProducer commandSendProducer;
   @Autowired
   private IMQClientDataService clientDataService;
+
+  @Override
+  public void refresh() {
+    CommandHandleDTO commandHandleDTO = new CommandHandleDTO();
+    commandHandleDTO.setIdCard(CommandHandleIdCardEnum.ALL_COMMAND.getIdCard());
+    commandHandleDTO.setCode(CommandHandleCodeEnum.REFRESH_DATA.getCode());
+    clientDataService.removeAll();
+    commandSendProducer.send(commandHandleDTO);
+  }
+
+  @Override
+  public boolean setThreadSize(String id, Integer threadSize) {
+    CommandHandleDTO commandHandleDTO = createByMQClientDataId(id);
+    commandHandleDTO.setCode(CommandHandleCodeEnum.SET_THREAD_SIZE.getCode());
+    commandHandleDTO.setData(threadSize);
+    commandSendProducer.send(commandHandleDTO);
+    return true;
+  }
 
   @Override
   public boolean startConsume(String id) {

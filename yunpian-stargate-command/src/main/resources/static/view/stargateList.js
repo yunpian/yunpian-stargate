@@ -3,17 +3,43 @@ const stargateList = function () {
     template: ''
         + '<template>'
         + '<div>'
+        + '  <el-collapse v-model="collapseIndex">'
+        + '  <el-collapse-item title="操作面板" name="1">'
         + '  <div style="margin-top: 20px">'
         + '    <el-form :inline="true" :model="filterForm" class="demo-form-inline">'
-        + '      <el-form-item label="应用名称">'
-        + '        <el-input v-model="filterForm.appName" placeholder="应用名称"></el-input>'
+        + '      <el-form-item label="应用名">'
+        + '        <el-select v-model="filterForm.appName" multiple clearable filterable placeholder="应用名称">'
+        + '          <el-option'
+        + '            v-for="item in appNames"'
+        + '            :key="item"'
+        + '            :label="item"'
+        + '            :value="item">'
+        + '          </el-option>'
+        + '        </el-select>'
         + '      </el-form-item>'
+        + '      <br />'
         + '      <el-form-item label="Group">'
-        + '        <el-input v-model="filterForm.group" placeholder="Group"></el-input>'
+        + '        <el-select v-model="filterForm.group" multiple clearable filterable Group="应用名称">'
+        + '          <el-option'
+        + '            v-for="item in groups"'
+        + '            :key="item"'
+        + '            :label="item"'
+        + '            :value="item">'
+        + '          </el-option>'
+        + '        </el-select>'
         + '      </el-form-item>'
+        + '      <br />'
         + '      <el-form-item label="Topic">'
-        + '        <el-input v-model="filterForm.topic" placeholder="Topic"></el-input>'
+        + '        <el-select v-model="filterForm.topic" multiple clearable filterable Group="Topic">'
+        + '          <el-option'
+        + '            v-for="item in topics"'
+        + '            :key="item"'
+        + '            :label="item"'
+        + '            :value="item">'
+        + '          </el-option>'
+        + '        </el-select>'
         + '      </el-form-item>'
+        + '      <br />'
         + '      <el-form-item label="类型">'
         + '        <el-select v-model="filterForm.type" placeholder="生产者/消费者">'
         + '          <el-option label="全  部" value=""></el-option>'
@@ -21,11 +47,12 @@ const stargateList = function () {
         + '          <el-option label="生产者" value="1"></el-option>'
         + '        </el-select>'
         + '      </el-form-item>'
-        + '      <el-form-item label="模糊匹配" prop="delivery">'
-        + '        <el-switch v-model="filterForm.fuzzy"></el-switch>'
-        + '      </el-form-item>'
+        + '      <br />'
         + '      <el-form-item>'
         + '        <el-button type="primary" @click="onSubmit">查询</el-button>'
+        + '      </el-form-item>'
+        + '      <el-form-item>'
+        + '        <el-button type="warning" @click="onRefresh">刷新客户端</el-button>'
         + '      </el-form-item>'
         + '    </el-form>'
         + '  </div>'
@@ -35,6 +62,8 @@ const stargateList = function () {
         + '    <el-button type="primary" @click="handleStartList">全部启动</el-button>'
         + '    <el-button type="danger" @click="handleStopList">全部停止</el-button>'
         + '  </div>'
+        + '  </el-collapse-item>'
+        + '  </el-collapse>'
         + '  <el-table'
         + '    :data="tableData"'
         + '    border'
@@ -81,7 +110,9 @@ const stargateList = function () {
         + '      label="客户端状态">'
         + '      <template slot-scope="scope">'
         + '        <p>运行状态: <span>{{ scope.row.serviceState }}</span></p>'
-        + '        <p v-if="scope.row.type==0">消费暂停:<span>{{ scope.row.pause }}</span></p>'
+        + '        <p v-if="scope.row.type==0">消费暂停: <span>{{ scope.row.pause }}</span></p>'
+        + '        <p v-if="scope.row.type==0">最小线程池: <span>{{ scope.row.consumeThreadMin }}</span></p>'
+        + '        <p v-if="scope.row.type==0">最大线程池: <span>{{ scope.row.consumeThreadMax }}</span></p>'
         + '      </template>'
         + '    </el-table-column>'
         + '    <el-table-column'
@@ -115,10 +146,13 @@ const stargateList = function () {
         + '          size="mini"'
         + '          type="danger"'
         + '          @click="handleStop(scope.$index, scope.row)">停止</el-button>'
-        // + '        <el-button'
-        // + '          size="mini"'
-        // + '          type="warning"'
-        // + '          @click="setAlerts(scope.$index, scope.row)">告警</el-button>'
+        + '        <br />'
+        + '        <br />'
+        + '        <el-button'
+        + '          size="mini"'
+        + '          type="warning"'
+        + '          @click="setThreadSize(scope.$index, scope.row)">设置线程池</el-button>'
+        + '        '
         + '      </template>'
         + '    </el-table-column>'
         + '  </el-table>'
@@ -127,23 +161,77 @@ const stargateList = function () {
     data: function () {
       return {
         tableData: [],
+        groups: [],
+        topics: [],
+        appNames: [],
+        collapseIndex: [],
         filter: {
           appName: '',
           topic: '',
           type: '',
           group: '',
-          fuzzy: false
         },
         filterForm: {
           appName: '',
           topic: '',
           type: '',
           group: '',
-          fuzzy: false
         },
       }
     },
     methods: {
+      setThreadSize(index, row) {
+        let id = row.id;
+        this.$prompt('请输入线程池大小', '设置线程池', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern: /^\+?[1-9]\d{0,2}$/,
+          inputErrorMessage: '请输入数字1到999'
+        }).then(({value}) => {
+          this.$http.post("/consumeManage/setThreadSize/" + id, value).then(
+              function (res) {
+                let parse = res.body;
+                if (parse.code != 0) {
+                  this.$notify({
+                    title: '请求失败处理',
+                    message: parse.msg,
+                  });
+                  return;
+                }
+                this.$notify({
+                  title: '命令下发成功',
+                  message: '修改线程池大小',
+                });
+              }, function () {
+                this.$notify({
+                  title: '请求失败处理',
+                  message: "请求失败处理",
+                });
+              });
+        });
+      },
+      onRefresh: function () {
+        this.$http.post("/consumeManage/refresh").then(
+            function (res) {
+              let parse = res.body;
+              if (parse.code != 0) {
+                this.$notify({
+                  title: '请求失败处理',
+                  message: parse.msg,
+                });
+                return;
+              }
+              this.$notify({
+                title: '命令下发成功',
+                message: '刷新客户端数据',
+              });
+            }, function () {
+              this.$notify({
+                title: '请求失败处理',
+                message: "请求失败处理",
+              });
+            });
+      },
       handleResumeList: function () {
         let ids = [];
         for (let i = 0; i < this.tableData.length; ++i) {
@@ -307,7 +395,6 @@ const stargateList = function () {
         this.filter = {
           appName: this.filterForm.appName,
           topic: this.filterForm.topic,
-          fuzzy: this.filterForm.fuzzy,
           type: this.filterForm.type,
           group: this.filterForm.group,
         };
@@ -316,8 +403,8 @@ const stargateList = function () {
       getData(filter) {
         this.$http.get(
             '/mqClientData/list?topic=' + filter.topic + '&appName='
-            + filter.appName + '&fuzzy=' + filter.fuzzy + '&type=' + filter.type
-            + '&group=' + filter.group).then(function (res) {
+            + filter.appName + '&type=' + filter.type + '&group='
+            + filter.group).then(function (res) {
 
           let parse = res.body;
           if (parse.code != 0) {
@@ -328,6 +415,57 @@ const stargateList = function () {
             return;
           }
           this.tableData = parse.data;
+        }, function () {
+          this.$notify({
+            title: '请求失败处理',
+            message: "请求失败处理",
+          });
+        });
+        this.$http.get(
+            '/mqClientData/appNames').then(function (res) {
+          let parse = res.body;
+          if (parse.code != 0) {
+            this.$notify({
+              title: '请求失败处理',
+              message: parse.msg,
+            });
+            return;
+          }
+          this.appNames = parse.data;
+        }, function () {
+          this.$notify({
+            title: '请求失败处理',
+            message: "请求失败处理",
+          });
+        });
+        this.$http.get(
+            '/mqClientData/groups').then(function (res) {
+          let parse = res.body;
+          if (parse.code != 0) {
+            this.$notify({
+              title: '请求失败处理',
+              message: parse.msg,
+            });
+            return;
+          }
+          this.groups = parse.data;
+        }, function () {
+          this.$notify({
+            title: '请求失败处理',
+            message: "请求失败处理",
+          });
+        });
+        this.$http.get(
+            '/mqClientData/topics').then(function (res) {
+          let parse = res.body;
+          if (parse.code != 0) {
+            this.$notify({
+              title: '请求失败处理',
+              message: parse.msg,
+            });
+            return;
+          }
+          this.topics = parse.data;
         }, function () {
           this.$notify({
             title: '请求失败处理',

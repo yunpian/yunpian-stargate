@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
+import org.apache.rocketmq.common.ServiceState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +37,6 @@ public class StargateConsumeManageImpl implements IStargateConsumeManageCore {
     String key = stargateBaseDTO.getId();
     stargateConsumeManageDTO.setKey(key);
 
-    String nameServer = consumeContext.getNamesrvAddr();
     String group = consumeContext.getGroup();
     oldGroupToKey.put(group, key);
     stargateConsumeManageDTOMap.put(key, stargateConsumeManageDTO);
@@ -60,7 +60,13 @@ public class StargateConsumeManageImpl implements IStargateConsumeManageCore {
       return false;
     }
     DefaultMQPushConsumer mqConsumer = consumeByKey.getConsumeContext().getMqConsumer();
-    mqConsumer.shutdown();
+    if (mqConsumer.getDefaultMQPushConsumerImpl().getServiceState()
+      .equals(ServiceState.CREATE_JUST)) {
+      return true;
+    } else if (mqConsumer.getDefaultMQPushConsumerImpl().getServiceState()
+      .equals(ServiceState.RUNNING)) {
+      mqConsumer.shutdown();
+    }
     consumeByKey.getConsumeContext().setMqConsumer(null);
     DefaultMQPushConsumer consumer = null;
     try {
@@ -83,8 +89,13 @@ public class StargateConsumeManageImpl implements IStargateConsumeManageCore {
       LOGGER.info("consumeByKey==null||consumeByKey.getConsumeContext()==null");
       return false;
     }
-    boolean b = ConsumeFactory.startMQConsumer(consumeByKey.getConsumeContext().getMqConsumer());
-    return b;
+    DefaultMQPushConsumer mqConsumer = consumeByKey.getConsumeContext().getMqConsumer();
+    if (mqConsumer.getDefaultMQPushConsumerImpl().getServiceState()
+      .equals(ServiceState.CREATE_JUST)) {
+      boolean b = ConsumeFactory.startMQConsumer(consumeByKey.getConsumeContext().getMqConsumer());
+      return b;
+    }
+    return false;
   }
 
   @Override
@@ -122,6 +133,30 @@ public class StargateConsumeManageImpl implements IStargateConsumeManageCore {
       return null;
     }
     return consumeByKey.getConsumeContext().getMqConsumer();
+  }
+
+  @Override
+  public boolean updateThreadSize(String key, Integer data) {
+    if (data == null || data < 1 || data > 999) {
+      return false;
+    }
+    boolean b = stopConsumeByKey(key);
+    if (!b) {
+      return b;
+    }
+    StargateConsumeManageDTO consumeByKey = getConsumeByKey(key);
+    if (consumeByKey == null || consumeByKey.getConsumeContext() == null) {
+      LOGGER.info("consumeByKey==null||consumeByKey.getConsumeContext()==null");
+      return false;
+    }
+    DefaultMQPushConsumer mqConsumer = consumeByKey.getConsumeContext().getMqConsumer();
+    mqConsumer.setConsumeThreadMin(data);
+    mqConsumer.setConsumeThreadMax(data);
+    b = startConsumeByKey(key);
+    if (!b) {
+      return b;
+    }
+    return true;
   }
 
   @Override

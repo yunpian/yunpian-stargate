@@ -28,8 +28,9 @@ import org.slf4j.LoggerFactory;
 public class UploadStatusJob implements Runnable {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(UploadStatusJob.class);
+  private static UploadStatusJob uploadStatusJob;
   private DataUploadProduct dataUploadProduct;
-  private long delay = 5;
+  private long delay = 300;
   private ScheduledExecutorService schedule;
 
   public UploadStatusJob() {
@@ -63,12 +64,20 @@ public class UploadStatusJob implements Runnable {
   }
 
   public void init() {
+    uploadStatusJob = this;
     schedule = new ScheduledThreadPoolExecutor(1);
     schedule.scheduleAtFixedRate(this, 1, delay, TimeUnit.SECONDS);
   }
 
+  public static void sendOnce() {
+    if (uploadStatusJob == null) {
+      return;
+    }
+    uploadStatusJob.run();
+  }
+
   @Override
-  public void run() {
+  public synchronized void run() {
     List<DataUploadDTO> dataUploadDTOS = new ArrayList<>();
     List<StargateConsumeManageDTO> stargateConsumeManageDTOS = StargateCoreManageInstance
       .getStargateConsumeCoreManage().consumeList();

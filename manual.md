@@ -9,7 +9,7 @@
    <dependency>
        <groupId>com.yunpian.stargate</groupId>
        <artifactId>yunpian-stargate-springboot</artifactId>
-       <version>0.9.0-SNAPSHOT</version>
+       <version>1.0.0</version>
    </dependency>
    ```
    
@@ -18,7 +18,7 @@
    <dependency>
        <groupId>com.yunpian.stargate</groupId>
        <artifactId>yunpian-stargate-jackson</artifactId>
-       <version>0.9.0-SNAPSHOT</version>
+       <version>1.0.0</version>
    </dependency>
    ```
    
@@ -230,7 +230,7 @@
   + *设置消费者的解码器*
   + `value:设置解码器Class`
 + StargateDelayMsec			
-  + *设置消息的延时毫秒数*
+  + *设置消息的延时毫秒数-目前取前一级延时等级*
   + `value:设置消息的延时毫秒数`
 + StargateDelayLevel			
   + *设置消息的延时等级*

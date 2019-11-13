@@ -12,10 +12,48 @@ Stargate（星门）是一个RocketMQ的客户端，使用全注解的方式，�
 <dependency>
     <groupId>com.yunpian.stargate</groupId>
     <artifactId>yunpian-stargate-springboot</artifactId>
-    <version>0.9.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
++ 编写生产者
+
+   ```java
+   @StargateProducer
+   public interface TestProducter {
+       @StargateMapper("testaaa")
+       SendResult test(@StargateBody HashMap a);
+   }
+   ```
+
++ 编写消费者
+
+   ```java
+   @StargateConsumer
+   public class TestConsumer {
+       @StargateMapper("testaaa")
+       public void test(@StargateBody HashMap a){
+           //TODO
+       }
+   }
+   ```
+
++ 发送消息
+
+   ```java
+   public class Test {
+       @Autowired
+       private TestProducter testProducter;
+       public static void main(String[] args){
+           SendResult sendResult = testProducter.test(new HashMap());
+       }
+   }
+   ```
+   
++ 详细配置启动消费请参考使用手册
++ [查看使用手册](./manual.md)
+   
+消费启停
 + 性能测试
   + 发送组件耗时0.7ms（第一次发送200ms）
   + 加上rocketmq连接发送耗时1.6ms
@@ -41,3 +79,35 @@ Stargate（星门）是一个RocketMQ的客户端，使用全注解的方式，�
 + [查看更新日志](./updateLog.md)
 
 ### 控制台（Stargate Command）
+
++ 启动控制台
+
+```xml
+<dependency>
+  <groupId>com.yunpian.stargate</groupId>
+  <artifactId>yunpian-stargate-command</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
+
++ 增加注解
+```java
+@EnableStargateCommand
+public class Application {
+  public static void main(String[] args) {
+    SpringApplication.run(Application.class, args);
+  }
+}
+```
+
++ 直接启动即可访问控制台
+
++ 客户端引入同步模块
+
+```xml
+<dependency>
+  <groupId>com.yunpian.stargate</groupId>
+  <artifactId>yunpian-stargate-command</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```

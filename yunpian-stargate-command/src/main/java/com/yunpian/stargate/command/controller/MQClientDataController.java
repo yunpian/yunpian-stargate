@@ -7,7 +7,9 @@ import com.yunpian.stargate.command.service.IMQClientDataService;
 import com.yunpian.stargate.command.utils.Click;
 import com.yunpian.stargate.core.utils.StringUtils;
 import java.text.SimpleDateFormat;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,27 +33,18 @@ public class MQClientDataController {
   public Click<List<MQClientDataVO>> list(MQClientDataForm mqClientDataForm) {
     List<MQClientData> list = dataService.list();
     List<MQClientDataVO> collect = list.stream().filter(mqClientData -> {
-      if (!StringUtils.isBlank(mqClientDataForm.getTopic())) {
-        if (mqClientDataForm.getFuzzy()) {
-          return mqClientData.getTopic().contains(mqClientDataForm.getTopic());
-        }
-        return mqClientData.getTopic().equals(mqClientDataForm.getTopic());
+      if (!mqClientDataForm.getTopic().isEmpty()) {
+        return mqClientDataForm.getTopic().contains(mqClientData.getTopic());
       }
       return true;
     }).filter(mqClientData -> {
-      if (!StringUtils.isBlank(mqClientDataForm.getGroup())) {
-        if (mqClientDataForm.getFuzzy()) {
-          return mqClientData.getGroup().contains(mqClientDataForm.getGroup());
-        }
-        return mqClientData.getGroup().equals(mqClientDataForm.getGroup());
+      if (!mqClientDataForm.getGroup().isEmpty()) {
+        return mqClientDataForm.getGroup().contains(mqClientData.getGroup());
       }
       return true;
     }).filter(mqClientData -> {
-      if (!StringUtils.isBlank(mqClientDataForm.getAppName())) {
-        if (mqClientDataForm.getFuzzy()) {
-          return mqClientData.getAppName().contains(mqClientDataForm.getAppName());
-        }
-        return mqClientData.getAppName().equals(mqClientDataForm.getAppName());
+      if (!mqClientDataForm.getAppName().isEmpty()) {
+        return mqClientDataForm.getAppName().contains(mqClientData.getAppName());
       }
       return true;
     }).filter(mqClientData -> {
@@ -71,5 +64,32 @@ public class MQClientDataController {
       return mqClientDataVO;
     }).collect(Collectors.toList());
     return Click.buildSucc(collect);
+  }
+
+  @GetMapping("/groups")
+  public Click<Set<String>> groups() {
+    Set<String> groups = new HashSet<>();
+    for (MQClientData clientData : dataService.list()) {
+      groups.add(clientData.getGroup());
+    }
+    return Click.buildSucc(groups);
+  }
+
+  @GetMapping("/topics")
+  public Click<Set<String>> topics() {
+    Set<String> topics = new HashSet<>();
+    for (MQClientData clientData : dataService.list()) {
+      topics.add(clientData.getTopic());
+    }
+    return Click.buildSucc(topics);
+  }
+
+  @GetMapping("/appNames")
+  public Click<Set<String>> appNames() {
+    Set<String> appNames = new HashSet<>();
+    for (MQClientData clientData : dataService.list()) {
+      appNames.add(clientData.getAppName());
+    }
+    return Click.buildSucc(appNames);
   }
 }

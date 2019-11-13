@@ -14,4 +14,5 @@ public interface IMQClientDataService {
 
   MQClientData get(String id);
 
+  void removeAll();
 }

@@ -4,6 +4,8 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.yunpian.stargate.command.dto.MQClientData;
 import com.yunpian.stargate.command.service.IMQClientDataService;
+import com.yunpian.stargate.dogrobber.dto.CommandHandleDTO;
+import com.yunpian.stargate.dogrobber.dto.DataUploadDTO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -16,18 +18,18 @@ import org.springframework.stereotype.Service;
 public class MQClientDataServiceImpl implements IMQClientDataService {
 
   private Cache<String, MQClientData> db = CacheBuilder.newBuilder()
-    //设置cache的初始大小为10，要合理设置该值
-    .initialCapacity(10)
-    //设置并发数为5，即同一时间最多只能有5个线程往cache执行写入操作
-    .concurrencyLevel(5)
-    //设置cache中的数据在写入之后的存活时间为10秒
-    .expireAfterWrite(30, TimeUnit.SECONDS)
-    //构建cache实例
+    .initialCapacity(100)
+    .concurrencyLevel(20)
+    .expireAfterWrite(360, TimeUnit.SECONDS)
     .build();
 
   @Override
   public MQClientData add(MQClientData mqClientData) {
     if (mqClientData == null || mqClientData.getId() == null) {
+      return null;
+    }
+    if (mqClientData.getTopic().contains(DataUploadDTO.TOPIC) ||
+      mqClientData.getTopic().contains(CommandHandleDTO.TOPIC)) {
       return null;
     }
     db.put(mqClientData.getId(), mqClientData);
@@ -42,6 +44,11 @@ public class MQClientDataServiceImpl implements IMQClientDataService {
   @Override
   public MQClientData get(String id) {
     return db.getIfPresent(id);
+  }
+
+  @Override
+  public void removeAll() {
+    db.invalidateAll();
   }
 
 }

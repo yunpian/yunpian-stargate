@@ -7,6 +7,7 @@ public class StargateDelayDTO {
 
   private long delayMsec;
   private int delayParamIndex = -1;
+  private int Level = 0;
 
   public long getDelayMsec() {
     return delayMsec;
@@ -22,6 +23,14 @@ public class StargateDelayDTO {
 
   public void setDelayParamIndex(int delayParamIndex) {
     this.delayParamIndex = delayParamIndex;
+  }
+
+  public int getLevel() {
+    return Level;
+  }
+
+  public void setLevel(int level) {
+    Level = level;
   }
 
   @Override

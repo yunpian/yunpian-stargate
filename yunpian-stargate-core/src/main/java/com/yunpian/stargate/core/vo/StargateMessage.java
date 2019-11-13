@@ -7,44 +7,29 @@ import java.io.Serializable;
  */
 public class StargateMessage<T> implements Serializable {
 
-    private static final long serialVersionUID = -4736121432533555463L;
+  private static final long serialVersionUID = -4736121432533555463L;
 
-    private T body;
-    private long delayMsec;
+  private T body;
 
-    public T getBody() {
-        return body;
-    }
+  public T getBody() {
+    return body;
+  }
 
-    public void setBody(T body) {
-        this.body = body;
-    }
+  public void setBody(T body) {
+    this.body = body;
+  }
 
-    public long getDelayMsec() {
-        return delayMsec;
-    }
+  @Override
+  public String toString() {
+    return "StargateMessage{" +
+      "body=" + body +
+      '}';
+  }
 
-    public void setDelayMsec(long delayMsec) {
-        this.delayMsec = delayMsec;
-    }
+  public StargateMessage() {
+  }
 
-    @Override
-    public String toString() {
-        return "StargateMessage{" +
-                "body=" + body +
-                ", delayMsec=" + delayMsec +
-                '}';
-    }
-
-    public StargateMessage() {
-    }
-
-    public StargateMessage(T body, long delayMsec) {
-        this.body = body;
-        this.delayMsec = delayMsec;
-    }
-
-    public StargateMessage(T body) {
-        this.body = body;
-    }
+  public StargateMessage(T body) {
+    this.body = body;
+  }
 }

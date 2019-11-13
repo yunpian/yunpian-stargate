@@ -7,7 +7,6 @@ import com.yunpian.stargate.command.controller.vo.TopologicalVO;
 import com.yunpian.stargate.command.dto.MQClientData;
 import com.yunpian.stargate.command.service.IMQClientDataService;
 import com.yunpian.stargate.command.utils.Click;
-import com.yunpian.stargate.core.utils.StringUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,27 +29,18 @@ public class TopologicalController {
     TopologicalVO topologicalVO = new TopologicalVO();
     List<MQClientData> list = dataService.list();
     List<MQClientData> collect = list.stream().filter(mqClientData -> {
-      if (!StringUtils.isBlank(topologicalForm.getTopic())) {
-        if (topologicalForm.getFuzzy()) {
-          return mqClientData.getTopic().contains(topologicalForm.getTopic());
-        }
-        return mqClientData.getTopic().equals(topologicalForm.getTopic());
+      if (!topologicalForm.getTopic().isEmpty()) {
+        return topologicalForm.getTopic().contains(mqClientData.getTopic());
       }
       return true;
     }).filter(mqClientData -> {
-      if (!StringUtils.isBlank(topologicalForm.getGroup())) {
-        if (topologicalForm.getFuzzy()) {
-          return mqClientData.getGroup().contains(topologicalForm.getGroup());
-        }
-        return mqClientData.getGroup().equals(topologicalForm.getGroup());
+      if (!topologicalForm.getGroup().isEmpty()) {
+        return topologicalForm.getGroup().contains(mqClientData.getGroup());
       }
       return true;
     }).filter(mqClientData -> {
-      if (!StringUtils.isBlank(topologicalForm.getAppName())) {
-        if (topologicalForm.getFuzzy()) {
-          return mqClientData.getAppName().contains(topologicalForm.getAppName());
-        }
-        return mqClientData.getAppName().equals(topologicalForm.getAppName());
+      if (!topologicalForm.getAppName().isEmpty()) {
+        return topologicalForm.getAppName().contains(mqClientData.getAppName());
       }
       return true;
     }).map(mqClientData -> {

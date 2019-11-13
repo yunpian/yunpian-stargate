@@ -22,4 +22,6 @@ public interface IStargateConsumeManageCore extends IStargateConsumeManage {
   boolean resumeConsumeByKey(String key);
 
   DefaultMQPushConsumer getConsumeByGroup(String group);
+
+  boolean updateThreadSize(String key, Integer data);
 }

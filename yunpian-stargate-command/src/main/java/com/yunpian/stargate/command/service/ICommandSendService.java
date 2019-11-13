@@ -5,6 +5,10 @@ package com.yunpian.stargate.command.service;
  */
 public interface ICommandSendService {
 
+  void refresh();
+
+  boolean setThreadSize(String id, Integer threadSize);
+
   boolean startConsume(String id);
 
   boolean stopConsume(String id);

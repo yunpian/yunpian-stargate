@@ -8,6 +8,8 @@ public enum CommandHandleCodeEnum {
   STOP_CONSUMER(102, "关闭消费者"),
   SUSPEND_CONSUMER(103, "暂停消费"),
   RESUME_CONSUMER(104, "恢复消费"),
+  REFRESH_DATA(105, "刷新数据"),
+  SET_THREAD_SIZE(106, "设置线程池大小"),
   ;
 
   private int code;
