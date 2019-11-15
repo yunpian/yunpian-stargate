@@ -112,3 +112,5 @@ public class Application {
 ```
 
 + 目前控制台支持基本信息展示，消费者启停，消费者线程池控制，关系拓扑图展示
+
+![7bd304f5-b554-4da0-82e7-b5c8b9ff8687.png](./img/7bd304f5-b554-4da0-82e7-b5c8b9ff8687.png)
