@@ -149,6 +149,7 @@ const stargateList = function () {
         + '        <br />'
         + '        <br />'
         + '        <el-button'
+        + '          v-if="scope.row.type==0"'
         + '          size="mini"'
         + '          type="warning"'
         + '          @click="setThreadSize(scope.$index, scope.row)">设置线程池</el-button>'
