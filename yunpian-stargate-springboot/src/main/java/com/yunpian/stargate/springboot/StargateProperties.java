@@ -20,6 +20,24 @@ public class StargateProperties {
   private Boolean delayMsecSwitch;
   private String env;
   private Boolean vipChannel;
+  private long[] delayLevel;
+  private String appName;
+
+  public String getAppName() {
+    return appName;
+  }
+
+  public void setAppName(String appName) {
+    this.appName = appName;
+  }
+
+  public long[] getDelayLevel() {
+    return delayLevel;
+  }
+
+  public void setDelayLevel(long[] delayLevel) {
+    this.delayLevel = delayLevel;
+  }
 
   public Boolean getVipChannel() {
     return vipChannel;

@@ -9,7 +9,7 @@
    <dependency>
        <groupId>com.yunpian.stargate</groupId>
        <artifactId>yunpian-stargate-springboot</artifactId>
-       <version>0.9.0-SNAPSHOT</version>
+       <version>1.0.0</version>
    </dependency>
    ```
    
@@ -18,19 +18,10 @@
    <dependency>
        <groupId>com.yunpian.stargate</groupId>
        <artifactId>yunpian-stargate-jackson</artifactId>
-       <version>0.9.0-SNAPSHOT</version>
+       <version>1.0.0</version>
    </dependency>
    ```
    
-   ```xml
-   <!--兼容云片的编解码器，根据需要引入-->
-   <dependency>
-       <groupId>com.yunpian.stargate</groupId>
-       <artifactId>yunpian-stargate-yunpian</artifactId>
-       <version>0.9.0-SNAPSHOT</version>
-   </dependency>
-   ```
-
 2. 启动类添加`@EnableStargate`注解
 
    ```java
@@ -69,6 +60,10 @@
        yunpian: 127.0.0.1:9876  
        ycloud: 127.0.0.1:9876  
        weike: 127.0.0.1:9876  
+     #这里配置延时等级毫秒为单位，请保证与服务器配置相同
+     delayLevel:
+       - 10000
+       - 30000
    ```
 
 + 方法二
@@ -92,6 +87,9 @@
            stargateConfig.setEncodClass(JacksonRocketClientEncode.class);
            stargateConfig.setDecodeClass(JacksonRocketClientDecode.class);
            stargateConfig.setDelayMsecSwitch(true);
+           stargateConfig.setDelayLevel(new long[]{10000, 30000, 60000, 120000, 180000, 240000,
+           300000, 360000, 420000, 480000, 540000, 600000, 1200000, 1800000, 3600000, 7200000, 14400000,
+           21600000, 28800000, 36000000, 43200000, 86400000, 129600000, 172800000, 259200000});
            return stargateConfig;
        }
    }
@@ -232,7 +230,7 @@
   + *设置消费者的解码器*
   + `value:设置解码器Class`
 + StargateDelayMsec			
-  + *设置消息的延时毫秒数*
+  + *设置消息的延时毫秒数-目前取前一级延时等级*
   + `value:设置消息的延时毫秒数`
 + StargateDelayLevel			
   + *设置消息的延时等级*

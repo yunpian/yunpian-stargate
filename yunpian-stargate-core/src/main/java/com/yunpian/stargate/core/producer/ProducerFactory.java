@@ -34,7 +34,7 @@ public class ProducerFactory {
       StargateEnvironment.getNamesrv(namesrvAddr) == null) {
       throw new StargateException("nameServer or group is null");
     }
-    group = group + "-" + namesrvAddr;
+//    group = group + "-" + namesrvAddr;
     synchronized (lock) {
       DefaultMQProducer mqProducer = producerMap.get(group);
       if (mqProducer != null) {

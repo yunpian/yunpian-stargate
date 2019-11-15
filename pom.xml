@@ -6,7 +6,7 @@
 
   <groupId>com.yunpian.stargate</groupId>
   <artifactId>yunpian-stargate</artifactId>
-  <version>0.9.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>pom</packaging>
   <modules>
     <module>yunpian-stargate-core</module>
@@ -14,11 +14,13 @@
     <module>yunpian-stargate-annotation</module>
     <module>yunpian-stargate-jackson</module>
     <module>yunpian-stargate-manage</module>
+    <module>yunpian-stargate-dogrobber</module>
+    <module>yunpian-stargate-command</module>
     <module>yunpian-stargate-sg1</module>
   </modules>
 
   <properties>
-    <stargate.version>0.9.0-SNAPSHOT</stargate.version>
+    <stargate.version>1.0.0</stargate.version>
   </properties>
 
   <build>
@@ -29,6 +31,7 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+          <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
       <!--   要将源码放上去   -->
@@ -59,7 +62,7 @@
       <dependency>
         <groupId>org.reflections</groupId>
         <artifactId>reflections</artifactId>
-        <version>0.9.10</version>
+        <version>0.9.11</version>
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
@@ -70,6 +73,11 @@
       <dependency>
         <groupId>com.yunpian.stargate</groupId>
         <artifactId>yunpian-stargate-annotation</artifactId>
+        <version>${stargate.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.yunpian.stargate</groupId>
+        <artifactId>yunpian-stargate-dogrobber</artifactId>
         <version>${stargate.version}</version>
       </dependency>
       <dependency>
@@ -111,17 +119,17 @@
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-core</artifactId>
-        <version>2.9.7</version>
+        <version>2.10.0</version>
       </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
-        <version>2.9.7</version>
+        <version>2.10.0</version>
       </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-annotations</artifactId>
-        <version>2.9.7</version>
+        <version>2.10.0</version>
       </dependency>
       <dependency>
         <groupId>commons-beanutils</groupId>

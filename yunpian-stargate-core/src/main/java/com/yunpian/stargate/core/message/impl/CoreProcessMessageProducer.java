@@ -19,8 +19,6 @@ public class CoreProcessMessageProducer implements IProcessMessageProducer {
 
   private static final Logger log = LoggerFactory.getLogger(CoreProcessMessageProducer.class);
 
-  private static final String DELAY_KEY = "dtime";
-
   @Override
   public int processProducer(ProducerContext producerContext, Message message, Object[] args)
     throws Throwable {
@@ -31,15 +29,17 @@ public class CoreProcessMessageProducer implements IProcessMessageProducer {
     }
 
     StargateDelayDTO stargateDelayDTO = producerContext.getDTO(StargateDelayDTO.class);
+    int level = stargateDelayDTO.getLevel();
+    long delayMsec = stargateDelayDTO.getDelayMsec();
+    if (level <= 0) {
+      level = DelayUtils.getMaxDelayLevelBySec(delayMsec);
+    }
     if (stargateDelayDTO.getDelayParamIndex() >= 0) {
-      stargateDelayDTO.setDelayMsec((long) args[stargateDelayDTO.getDelayParamIndex()]);
+      delayMsec = (long) args[stargateDelayDTO.getDelayParamIndex()];
+      level = DelayUtils.getMaxDelayLevelBySec(delayMsec);
     }
 
-    long delayMsec = stargateDelayDTO.getDelayMsec();
-    int level = DelayUtils.getMaxDelayLevelBySec(delayMsec);
-    StargateMessage stargateMessage = new StargateMessage(dataBody,
-      delayMsec + System.currentTimeMillis());
-    message.putUserProperty(DELAY_KEY, String.valueOf(delayMsec));
+    StargateMessage stargateMessage = new StargateMessage(dataBody);
 
     IStargateClientEncod rocketClientEncod = producerContext.getDTO(StargateEncodDTO.class)
       .getRocketClientEncod();

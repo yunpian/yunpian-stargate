@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@4.4.0/dist/echarts.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <style>
+    .el-header, .el-footer {
+      background-color: #545c64;
+      color: #333;
+      text-align: center;
+      line-height: 60px;
+    }
+
+    .el-aside {
+      background-color: #ffffff;
+      color: #333;
+      text-align: center;
+    }
+
+    .el-main {
+      background-color: #ffffff;
+      color: #333;
+      text-align: center;
+    }
+
+    body > .el-container {
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
+<body style="height:795px;margin: 0;padding: 0">
+<div id="app" style="height:100%;margin: 0;padding: 0">
+  <el-container style="height:100%;">
+    <el-header>
+      <el-row :gutter="20">
+        <el-col :span="8">
+          <div style="float:left" class="grid-content bg-purple">
+            <span style="
+              color: white;
+              font-weight:bold;
+              text-decoration:underline;
+              font-size:30px;
+              ">StarGate</span>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div style="text-align:center" class="grid-content bg-purple">
+            <el-menu style="width: 100%"
+                     :default-active="activeIndex"
+                     class="el-menu-demo"
+                     mode="horizontal"
+                     @select="handleSelect"
+                     background-color="#545c64"
+                     text-color="#fff"
+                     active-text-color="#ffd04b">
+              <el-menu-item index="1">客户端列表</el-menu-item>
+              <el-menu-item index="2">关系拓扑图</el-menu-item>
+            </el-menu>
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div style="float:right" class="grid-content bg-purple">
+            <span style="
+              color: white;
+              font-size:16px;
+              "></span>
+          </div>
+        </el-col>
+      </el-row>
+    </el-header>
+    <el-container style="margin: 0;padding: 0">
+      <el-main style="margin: 0;padding: 0">
+        <router-view style="margin: 0;padding: 0"></router-view>
+      </el-main>
+    </el-container>
+  </el-container>
+
+</div>
+</body>
+
+<script src="view/stargateList.js"></script>
+<script src="view/topological.js"></script>
+<script>
+  let stargateList1 = stargateList();
+  const routes = [
+    {path: '/', component: stargateList1},
+    {path: '/stargateList', component: stargateList1},
+    {path: '/topological', component: topological()},
+  ];
+  const router = new VueRouter({
+    routes: routes
+  });
+  new Vue({
+    router: router,
+    el: '#app',
+    data: function () {
+      return {
+        activeIndex: '1'
+      }
+    },
+    created: function () {
+      this.activeIndex = '1';
+      router.replace(routes['1'].path);
+    },
+    methods: {
+      handleSelect(key, keyPath) {
+        router.replace(routes[key].path);
+      },
+    }
+  });
+</script>
+</html>
