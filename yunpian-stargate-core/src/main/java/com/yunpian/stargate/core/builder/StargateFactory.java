@@ -38,6 +38,7 @@ public class StargateFactory {
       stargateProcessManage = new StargateProcessManageImpl();
       stargateConsumeManage = new StargateConsumeManageImpl();
       StargateInstance.getStargateInstance().init(stargateProcessManage, stargateConsumeManage);
+      ProcessCenter.sortByIndex();
     }
   }
 

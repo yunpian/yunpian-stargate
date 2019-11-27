@@ -30,6 +30,7 @@ import com.yunpian.stargate.core.message.IProcessMessageConsume;
 import com.yunpian.stargate.core.message.IProcessMessageProducer;
 import com.yunpian.stargate.core.message.impl.CoreProcessMessageConsume;
 import com.yunpian.stargate.core.message.impl.CoreProcessMessageProducer;
+import com.yunpian.stargate.core.utils.SortIndexComparator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -92,6 +93,16 @@ public class ProcessCenter {
     processMessageConsumes.add(new CoreProcessMessageConsume());
 
     processMessageProducers.add(new CoreProcessMessageProducer());
+  }
+
+  public static void sortByIndex() {
+    SortIndexComparator sortIndexComparator = new SortIndexComparator();
+    Collections.sort(getConsumeAnnotationProcess(), sortIndexComparator);
+    Collections.sort(getProducersAnnotationProcess(), sortIndexComparator);
+    Collections.sort(getConsumeClientProcess(), sortIndexComparator);
+    Collections.sort(getProducersClientProcess(), sortIndexComparator);
+    Collections.sort(getConsumeMessageProcess(), sortIndexComparator);
+    Collections.sort(getProducersMessageProcess(), sortIndexComparator);
   }
 
   public static ProcessCenter getInstance() {
