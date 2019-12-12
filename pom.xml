@@ -4,6 +4,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
   <groupId>com.yunpian.stargate</groupId>
   <artifactId>yunpian-stargate</artifactId>
   <version>1.0.0</version>
@@ -18,6 +23,19 @@
     <module>yunpian-stargate-command</module>
     <module>yunpian-stargate-sg1</module>
   </modules>
+  <licenses>
+    <license>
+      <name>The MIT License</name>
+      <url>https://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:git@github.com:yunpian/yunpian-stargate.git</connection>
+    <developerConnection>scm:git@github.com:yunpian/yunpian-stargate.git</developerConnection>
+    <url>scm:git@github.com:yunpian/yunpian-stargate.git</url>
+  </scm>
 
   <properties>
     <stargate.version>1.0.0</stargate.version>

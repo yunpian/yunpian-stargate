@@ -1,13 +1,14 @@
 package com.yunpian.stargate.core.message;
 
 import com.yunpian.stargate.core.context.ConsumeContext;
+import com.yunpian.stargate.core.utils.ISortIndex;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.common.message.MessageExt;
 
 /**
  * Created with IntelliJ IDEA. User: ZhouKaifan Date:2018/11/23 Time:2:14 PM
  */
-public interface IProcessMessageConsume {
+public interface IProcessMessageConsume extends ISortIndex {
 
   //正常继续
   int SUCCESS = 0;
