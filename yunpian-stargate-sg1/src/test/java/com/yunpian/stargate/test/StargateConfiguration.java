@@ -32,7 +32,7 @@ public class StargateConfiguration {
     stargateConfig.setThreadSize(6);
     stargateConfig.setNamesrvDefault("yunpian");
     Map<String, String> nameServer = new ConcurrentHashMap<>();
-    nameServer.put("yunpian", "127.0.0.1:9876");
+    nameServer.put("yunpian", "172.16.24.197:9876");
     stargateConfig.setNamesrvAddr(nameServer);
     stargateConfig.setEnv("test2");
     stargateConfig.setEncodClass(JacksonStargateClientEncode.class);
